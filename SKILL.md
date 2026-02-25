@@ -167,7 +167,7 @@ Generate output file using the configuration from **Configuration** section:
 3. **Example**: If 药品名称 = `PD-1抑制剂` and 适应症 = `肺癌`
    - Filename: `PD-1抑制剂@肺癌.md`
 
-4. **Final save path**: Expand `~` to actual home directory, then `~/obsidian/AI/{filename}`
+4. **Final save path**: Expand `~` to actual home directory, then use the path from **Configuration** section: `~/.openclaw/workspace/{filename}`
 
 ### Step 4: Generate Expert Commentary (Optional but Recommended)
 
