@@ -103,10 +103,10 @@ git clone https://github.com/abinww/clinical-data-extractor.git ~/.openclaw/skil
 
 ## 技术特点
 
-- 使用 `web_fetch` 工具提取网页内容
+- 使用 `web_fetch` 工具提取公开网站内容
 - 使用 `pdftotext` 或 `nano-pdf` 处理 PDF
-- 自动处理微信等受限平台的内容提取
-- 支持临床数据图片的引用（网页 URL 或 PDF 截图）
+- 对受限平台（如微信公众号）提供手工截图引导
+- 支持临床数据图片的引用（公开网站 URL 或手动截图）
 
 ## 已支持的会议来源
 

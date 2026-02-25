@@ -32,8 +32,39 @@ This skill enables extracting structured clinical trial data from pharmaceutical
 - AE (不良事件)
 
 ⚠️ 如需修改配置，请直接编辑本配置区域
-⚠️ 注意：`~` 需在执行时展开为实际用户 home 目录
+⚠️ 注意：`~` 需在执行时展开为实际用户 home directory
 ⚠️ 注意：不在列表中的终点数据应写中文全称以清晰说明
+⚠️ 注意：本技能会尝试自动提取网页图片，但对于受限平台（微信公众号等）需要手动截图
+
+## Requirements
+
+This skill requires the following tools to be available in the OpenClaw runtime environment:
+
+### Core Dependencies
+- **web_fetch**: Built-in OpenClaw tool for extracting content from URLs (no installation required)
+- **read/write**: Built-in OpenClaw tools for file operations (no installation required)
+
+### Optional Dependencies (For PDF Processing)
+The following tools are used for PDF extraction. The skill will attempt each method in order:
+
+1. **nano-pdf CLI** (recommended)
+   - Installation: Usually pre-installed with OpenClaw
+   - Alternative: If unavailable, file size reduction or OCR may be needed for scanned PDFs
+
+2. **pdftotext** (poppler-utils)
+   - Installation (Debian/Ubuntu): `sudo apt-get install poppler-utils`
+   - Installation (macOS): `brew install poppler`
+   - Used as fallback if nano-pdf is not available
+
+### Filesystem Requirements
+- **Write access to user home directory**: The skill creates markdown files and image files in the configured output path (default: `~/.openclaw/workspace`)
+
+### Configuration Flexibility
+All configuration options are defined in the **Configuration** section above and can be modified without reinstalling the skill:
+- **输出路径** (Output path)
+- **命名格式** (Filename format)
+- **文件名清理规则** (Filename sanitization rules)
+- **常见终点缩写列表** (Common endpoint abbreviations)
 
 ## When to Use
 
@@ -94,30 +125,40 @@ Analyze the fetched content and extract the following fields. Leave blank if inf
 #### Handling Clinical Data Images
 
 **网页图片**：
-- 识别网页中直接显示临床数据的图片（如疗效曲线、安全性图表等）
-- 提取图片 URL，在 markdown 中用链接方式引用：
+- **公开网站（ASCO、ESMO、EHA 等）**：识别网页中直接显示的临床数据图片（如疗效曲线、安全性图表），尝试提取图片 URL 并引用
   ```markdown
   ![临床数据描述](图片URL)
   ```
-- ⚠️ **注意**：微信公众号等受平台限制的网页可能无法直接提取图片URL，此时应在文档中手动添加图片说明，提示用户截图保存后引用
+- **受限平台（微信公众号等）**：这些平台通常会禁止图片链接的外部访问，无法直接提取图片 URL。在此情况下：
+  - 在文档中添加图片说明，提示用户手动截图
+  - 提供参考图片的描述（如"疗效数据图"、"安全性汇总表"等）
+  - 如果需要获取原图，建议用户手动截图保存
 
-**无法提取图片时的处理方式**：
+**图片处理的两种方式**：
+
+**方式一：自动提取（适用于公开网站）**
+```markdown
+![疗效曲线图](https://esmo.org/.../survival_curve.png)
+```
+
+**方式二：手动截图（适用于受限平台或提取失败时）**
 ```markdown
 ## 临床数据图片
 
-⚠️ 网页无法直接提取图片，建议手动截图保存。
+⚠️ 无法自动提取图片（受限平台或提取失败），建议手动截图保存。
 
 参考图片描述：
-1. 疗效数据图（如 rPFS 曲线）
-2. 安全性汇总表（AE发生率）
+1. 疗效数据图（如 rPFS 曲线、OS 曲线）
+2. 安全性汇总表（AE 发生率、严重 AE）
 
-如需获取原图，请截图保存至本目录：
+截图保存路径示例：
 ```markdown
 ![疗效曲线](./药品名称_疗效曲线.png)
 ```
 
 **PDF 图片**：
 - 识别 PDF 中直接显示临床数据的图片页面
+- **重要**：PDF 中的图片无法自动提取，需要手动截图保存
 - 使用截图工具保存图片到输出目录（与 markdown 文件同目录）
 - 在 markdown 中用本地路径引用：
   ```markdown
