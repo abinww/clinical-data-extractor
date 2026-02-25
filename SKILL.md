@@ -41,8 +41,16 @@ This skill enables extracting structured clinical trial data from pharmaceutical
 This skill requires the following tools to be available in the OpenClaw runtime environment:
 
 ### Core Dependencies
-- **web_fetch**: Built-in OpenClaw tool for extracting content from URLs (no installation required)
+- **browser**: Built-in OpenClaw tool for webpage automation and content extraction (no installation required)
+  - Requires: Chrome browser installed on the host system
+  - Usage: `browser action=start profile=openclaw target=host`
 - **read/write**: Built-in OpenClaw tools for file operations (no installation required)
+
+### Browser System Requirements
+For browser automation to work correctly:
+- **Chrome browser**: Must be installed on the host system (typically at `/usr/bin/google-chrome` or similar path)
+- **Display server**: Desktop environment with X11/Wayland (for non-headless mode) or headless mode support
+- **Network connectivity**: Required for loading webpages
 
 ### Optional Dependencies (For PDF Processing)
 The following tools are used for PDF extraction. The skill will attempt each method in order:
@@ -88,11 +96,27 @@ Determine if user provided a **URL** or a **PDF file**.
 
 #### Case A: User provides a URL
 
-Use `web_fetch` to extract page content as markdown/text:
+Use the **built-in browser** to open and extract page content:
 
-```bash
-web_fetch --url <provided-url> --extractMode markdown
-```
+1. **Start browser** (if not already running):
+   ```bash
+   browser action=start profile=openclaw target=host
+   ```
+
+2. **Navigate to URL**:
+   ```bash
+   browser action=open targetUrl=<provided-url>
+   ```
+
+3. **Capture page snapshot** to extract content:
+   ```bash
+   browser action=snapshot format=markdown
+   ```
+
+4. **Optional: Take screenshot** for visual reference:
+   ```bash
+   browser action=screenshot fullPage=true
+   ```
 
 #### Case B: User provides a PDF file
 
@@ -312,6 +336,7 @@ The generated markdown file should follow this template:
 - **配置修改**: 输出路径、命名格式、常见缩写列表在 **Configuration** 区域定义，直接编辑即可修改
 - **输出文件位置**: 查看 **Configuration** 区域的 `输出路径` 设置
 - **终点缩写规则**: 只对 **Configuration** 中"常见终点缩写列表"内的缩写使用英文，其他终点写中文全称
+- **浏览器使用**: 网页提取使用内置浏览器，启动时指定 `target=host` 参数。如果浏览器未运行，skill 会自动启动
 - Use memory_search to check if similar drugs have been processed before extracting
 - If the content (webpage or PDF) contains multiple drugs or trials, clarify with user which one to extract
 - For complex clinical endpoints, preserve original terminology and units
