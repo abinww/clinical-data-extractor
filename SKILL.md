@@ -35,6 +35,29 @@ This skill enables extracting structured clinical trial data from pharmaceutical
 ⚠️ 注意：`~` 需在执行时展开为实际用户 home 目录
 ⚠️ 注意：不在列表中的终点数据应写中文全称以清晰说明
 
+## When to Use
+
+Use this skill when:
+
+1. **User provides a URL** to a pharmaceutical conference website or clinical trial publication (ASCO, ESMO, EHA, WCLC, AACR, etc.) containing clinical trial data
+2. **User provides a PDF file** (会议资料、临床研究摘要、药品说明书、医学期刊论文等) containing clinical trial data
+3. **User requests to extract structured clinical trial data** from webpages or PDFs, including:
+   - Drug name (药品名称)
+   - Manufacturer (生产厂家)
+   - Indication (适应症)
+   - Clinical phase (临床阶段)
+   - Trial name (临床名称)
+   - Conference (学术会议)
+   - Efficacy and safety data presented in tables or charts
+4. **User wants the output formatted as a markdown file** with standardized structure
+5. User mentions keywords like "提取临床数据", "整理临床试验", "extract clinical data", "clinical trial extraction", or similar requests
+
+**Examples of trigger phrases:**
+- "帮我提取这个网页的临床试验数据"
+- "把这份PDF里的临床试验信息整理一下"
+- "从这个ASCO会议官网提取XXX药的临床数据"
+- "Extract clinical trial data from this URL/PDF"
+
 ## Workflow
 
 ### Step 1: Detect Input Type and Extract Content
