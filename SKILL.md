@@ -40,22 +40,13 @@ This skill enables extracting structured clinical trial data from pharmaceutical
 Use this skill when:
 
 1. **User provides a URL** to a pharmaceutical conference website or clinical trial publication (ASCO, ESMO, EHA, WCLC, AACR, etc.) containing clinical trial data
-2. **User provides a PDF file** (会议资料、临床研究摘要、药品说明书、医学期刊论文等) containing clinical trial data
-3. **User requests to extract structured clinical trial data** from webpages or PDFs, including:
-   - Drug name (药品名称)
-   - Manufacturer (生产厂家)
-   - Indication (适应症)
-   - Clinical phase (临床阶段)
-   - Trial name (临床名称)
-   - Conference (学术会议)
-   - Efficacy and safety data presented in tables or charts
-4. **User wants the output formatted as a markdown file** with standardized structure
-5. User mentions keywords like "提取临床数据", "整理临床试验", "extract clinical data", "clinical trial extraction", or similar requests
+2. **User provides a PDF file** containing clinical trial data
+3. **User requests to extract structured clinical trial data** from webpages or PDFs
+4. User mentions keywords like "临床数据", "临床试验", "clinical data", "clinical trial", or similar requests
 
 **Examples of trigger phrases:**
-- "帮我提取这个网页的临床试验数据"
+- "提取临床数据"
 - "把这份PDF里的临床试验信息整理一下"
-- "从这个ASCO会议官网提取XXX药的临床数据"
 - "Extract clinical trial data from this URL/PDF"
 
 ## Workflow
@@ -164,12 +155,12 @@ For effectiveness and safety data, present findings in **markdown table format**
 - 表格内容第一行必须列出各组入组人数，指标列写"N"
 - **关键原则**：确保同一列的数据与该列标题对应的cohort一致
 - **重要规则**：必须明确标注cohort的具体信息（如剂量组、治疗方案等），避免使用"最大剂量组"、"高剂量组"等笼统表述
-  - ❌ 错误：`UBT251 (最大效果)` 或 `高剂量组`
-  - ✅ 正确：`UBT251 6mg` 或 `对照组`
+  - ❌ 错误：`AAB001 (最大效果)` 或 `高剂量组`
+  - ✅ 正确：`AAB001 6mg` 或 `对照组`
 - 不同终点可能基于不同分析人群（如总人群 vs 可评估人群），需分别分列
 - 缺乏的数据标注 "N/A"，不要将不同人群的数据混用
 - 合并主要终点、次要终点、安全性到一个表格
-- 列名：`["指标", "实验组1", "实验组2", ...]` 或 `["指标", "对照组", "实验组"]`（如有对照）
+- 列名：`["指标", "实验组1", "实验组2", ...]` 或 `["指标", "实验组", "对照组"]`（如有对照）
 - 常见终点使用英文缩写（见 **Configuration** 中的"常见终点缩写列表"）
 - 不常见的终点写中文全称
 - 不要写95% CI置信区间
@@ -182,15 +173,11 @@ For effectiveness and safety data, present findings in **markdown table format**
 
 Generate output file using the configuration from **Configuration** section:
 
-1. **Filename format**: `{药品名称}@{适应症}.md`
+1. **Filename format**: Follow the **命名格式** from Configuration section
 2. **Sanitize filename**:
    - Replace spaces with underscores
    - Remove special characters
-
-3. **Example**: If 药品名称 = `PD-1抑制剂` and 适应症 = `肺癌`
-   - Filename: `PD-1抑制剂@肺癌.md`
-
-4. **Final save path**: Expand `~` to actual home directory, then use the path from **Configuration** section: `~/.openclaw/workspace/{filename}`
+3. **Final save path**: Use the **输出路径** from Configuration section, followed by the generated `{filename}`, then expand `~` to actual home directory.
 
 ### Step 4: Generate Expert Commentary (Optional but Recommended)
 
