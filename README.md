@@ -116,14 +116,6 @@ git clone https://github.com/abinww/clinical-data-extractor.git ~/.openclaw/skil
 - EHA (European Hematology Association)
 - 会议摘要和公告
 
-## 示例输出
-
-已处理的数据文件：
-
-- `DB-1311_BNT324@前列腺癌.md` - B7H3 ADC 在前列腺癌的临床数据
-- `UBT251@超重_肥胖.md` - GLP-1 三靶点激动剂的肥胖症 II 期数据
-- `Sacituzumab_tirumotecan@尿路上皮癌.md` - TROP2 ADC 联合 PD-1 的尿路上皮癌数据
-
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request！
